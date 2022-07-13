@@ -38,6 +38,8 @@ module.exports = {
     try {
         const { email } = req.body;
         const userByEmail = await User.findOne({email});
+        const userByEmail2 = await User.findOne({email}).lean();
+
 
         if (!userByEmail) {
             throw new CError(`User not found`, 404);

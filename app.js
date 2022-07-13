@@ -1,5 +1,6 @@
 require('dorenv').config();
 const express = require('express');
+const expressFileUpload = require('express-fileupload');
 const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost:27017/dec');
@@ -12,7 +13,8 @@ const app = express();
     app.use(express.json());
     app.use(express.urlencoded({extended: true}));
 
-    app.use('/auth', authRouter);
+app.use(expressFileUpload());
+app.use('/auth', authRouter);
     app.use('/users', userRouter);
 
 app.use('*', (req, res) => {
@@ -20,6 +22,7 @@ app.use('*', (req, res) => {
 });
 
 app.use((err, req, res, next) => {
+    console.log(err);
     res
         .status(err.status || 500)
         .json({
