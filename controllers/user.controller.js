@@ -1,6 +1,7 @@
 const User = require("../dataBase/User");
 const CError = require('../error/CustomError');
 const { uploadFile } = require("../services/s3.service");
+const userService = require("../services/user.service");
 
 async function updateUser(req, res, next) {
     try {
@@ -12,8 +13,8 @@ async function updateUser(req, res, next) {
 
 async function getAllUsers(req, res, next) {
     try {
-        const users = await User.find();
-        res.json(users);
+        const paginationResponse = await userService.getUsersWithPagination(req.query);
+        res.json(paginationResponse);
     } catch (e) {
         next(e);
     }
